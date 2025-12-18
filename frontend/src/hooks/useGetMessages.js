@@ -20,18 +20,16 @@ const useGetMessages = () => {
 				const privateKeyObj = await importPrivateKey(privateKey);
 				const decryptedMessages = await Promise.all(data.map(async (msg) => {
 					let message;
-					if (msg.senderId === authUser._id) {
-						message = msg.plainMessage;
-					} else {
-						try {
-							const decryptedKey = await decryptMessage(msg.encryptedKey, privateKeyObj);
-							const aesKey = await importAESKey(decryptedKey);
-							const encryptedData = JSON.parse(msg.message);
-							message = await decryptAES(encryptedData, aesKey);
-						} catch (error) {
-							console.error("Decrypt error:", error);
-							message = "Error decrypting message";
-						}
+					try {
+						// if I am sender -> use encryptedKeySender; else use encryptedKey
+						const keyToUse = msg.senderId === authUser._id ? msg.encryptedKeySender : msg.encryptedKey;
+						const decryptedKey = await decryptMessage(keyToUse, privateKeyObj);
+						const aesKey = await importAESKey(decryptedKey);
+						const encryptedData = JSON.parse(msg.message);
+						message = await decryptAES(encryptedData, aesKey);
+					} catch (error) {
+						console.error("Decrypt error:", error);
+						message = "Error decrypting message";
 					}
 					return { ...msg, message };
 				}));

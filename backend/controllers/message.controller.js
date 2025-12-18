@@ -23,7 +23,7 @@ const encryptMessage = (message, publicKeyPem) => {
 
 export const sendMessage = async (req, res) => {
 	try {
-		const { message, encryptedKey } = req.body;
+		const { message, encryptedKey, encryptedKeySender } = req.body;
 		const { id: receiverId } = req.params;
 		const senderId = req.user._id;
 
@@ -42,6 +42,7 @@ export const sendMessage = async (req, res) => {
 			receiverId,
 			message,
 			encryptedKey,
+			encryptedKeySender,
 		});
 
 		if (newMessage) {

@@ -20,6 +20,11 @@ const messageSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		// AES key encrypted with sender's public key (so sender can decrypt their own messages after reload)
+		encryptedKeySender: {
+			type: String,
+			required: false,
+		},
 		// createdAt, updatedAt
 	},
 	{ timestamps: true }

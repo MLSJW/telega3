@@ -15,7 +15,8 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io("http://localhost:5000", {
+			// Connect to same origin (works behind Vite proxy and in production)
+			const socket = io("/", {
 				query: {
 					userId: authUser._id,
 				},
