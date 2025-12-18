@@ -9,9 +9,6 @@ build:
   artifacts:
     "*": /
 run:
-  command: npm start
-  env:
-    PORT: "80"
-    MONGO_DB_URI: "mongodb+srv://ioioioii3312_db_user:DGGYUYZanKbacOSn@cluster0.eu2wtft.mongodb.net/?appName=Cluster0"
+  command: node backend/server.js
   persistenceMount: /data
   containerPort: "80"
