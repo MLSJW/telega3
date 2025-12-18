@@ -16,7 +16,7 @@ const messageSchema = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
-		plainMessage: {
+		encryptedKey: {
 			type: String,
 			required: true,
 		},

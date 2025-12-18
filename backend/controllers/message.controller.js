@@ -1,10 +1,29 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
+import crypto from "crypto";
+import User from "../models/user.model.js";
+
+const ALGORITHM = "rsa";
+const KEY_FORMAT = "pem";
+
+// Функция для шифрования
+const encryptMessage = (message, publicKeyPem) => {
+	const buffer = Buffer.from(message, "utf8");
+	const encrypted = crypto.publicEncrypt(
+		{
+			key: publicKeyPem,
+			padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+			oaepHash: "sha256",
+		},
+		buffer
+	);
+	return encrypted.toString("base64");
+};
 
 export const sendMessage = async (req, res) => {
 	try {
-		const { message } = req.body;
+		const { message, encryptedKey } = req.body;
 		const { id: receiverId } = req.params;
 		const senderId = req.user._id;
 
@@ -21,8 +40,8 @@ export const sendMessage = async (req, res) => {
 		const newMessage = new Message({
 			senderId,
 			receiverId,
-			message: encryptedMessage,
-			plainMessage: message,
+			message,
+			encryptedKey,
 		});
 
 		if (newMessage) {
@@ -44,8 +63,8 @@ export const sendMessage = async (req, res) => {
 
 		res.status(201).json(newMessage);
 	} catch (error) {
-		console.log("Ошибка в отправке смс: ", error.message);
-		res.status(500).json({ error: "Ошибка на сервере 500" });
+		console.log("Error in sendMessage:", error.message);
+		res.status(500).json({ error: "Internal server error" });
 	}
 };
 
