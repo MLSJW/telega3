@@ -5,13 +5,13 @@ meta:
     version: "18"
 build:
   skip: false
-  additionalCommands: null
+  additionalCommands: "cd frontend && npm install && npm run build"
   artifacts:
     "*": /
 run:
-  scriptName: server.js
-  scriptArguments: null
-  nodeArguments: null
-  command: npm run server
+  command: npm start
+  env:
+    PORT: "80"
+    MONGO_DB_URI: "mongodb+srv://ioioioii3312_db_user:DGGYUYZanKbacOSn@cluster0.eu2wtft.mongodb.net/?appName=Cluster0"
   persistenceMount: /data
   containerPort: "80"
