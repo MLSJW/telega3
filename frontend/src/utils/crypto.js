@@ -12,27 +12,27 @@ export const generateKeyPair = async () => {
     return keyPair;
 };
 
-// Экспорт публичного ключа в base64
+// Экспорт публичного ключа в hex
 export const exportPublicKey = async (publicKey) => {
     const exported = await crypto.subtle.exportKey("spki", publicKey);
-    return btoa(String.fromCharCode(...new Uint8Array(exported)));
+    return Array.prototype.map.call(new Uint8Array(exported), x => ('00' + x.toString(16)).slice(-2)).join('');
 };
 
-// Импорт публичного ключа из base64
-export const importPublicKey = async (base64Key) => {
-    const binaryKey = Uint8Array.from(atob(base64Key), c => c.charCodeAt(0));
+// Импорт публичного ключа из hex
+export const importPublicKey = async (hexKey) => {
+    const binaryKey = Uint8Array.from(hexKey.match(/.{2}/g).map(byte => parseInt(byte, 16)));
     return await crypto.subtle.importKey("spki", binaryKey, ALGORITHM, true, ["encrypt"]);
 };
 
-// Экспорт приватного ключа в base64
+// Экспорт приватного ключа в hex
 export const exportPrivateKey = async (privateKey) => {
     const exported = await crypto.subtle.exportKey("pkcs8", privateKey);
-    return btoa(String.fromCharCode(...new Uint8Array(exported)));
+    return Array.prototype.map.call(new Uint8Array(exported), x => ('00' + x.toString(16)).slice(-2)).join('');
 };
 
-// Импорт приватного ключа из base64
-export const importPrivateKey = async (base64Key) => {
-    const binaryKey = Uint8Array.from(atob(base64Key), c => c.charCodeAt(0));
+// Импорт приватного ключа из hex
+export const importPrivateKey = async (hexKey) => {
+    const binaryKey = Uint8Array.from(hexKey.match(/.{2}/g).map(byte => parseInt(byte, 16)));
     return await crypto.subtle.importKey("pkcs8", binaryKey, ALGORITHM, true, ["decrypt"]);
 };
 
