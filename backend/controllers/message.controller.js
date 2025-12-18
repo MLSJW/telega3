@@ -67,3 +67,31 @@ export const getMessages = async (req, res) => {
 		res.status(500).json({ error: "Ошибка на сервере 500" });
 	}
 };
+
+export const getConversations = async (req, res) => {
+	try {
+		const userId = req.user._id;
+		const conversations = await Conversation.find({ participants: userId }).populate({
+			path: "participants",
+			select: "fullName username profilePic",
+		}).populate({
+			path: "messages",
+			options: { sort: { createdAt: -1 }, limit: 1 }, // Последнее сообщение
+		});
+
+		// Форматируем для frontend: для каждого conversation вернуть другого участника
+		const formattedConversations = conversations.map((conv) => {
+			const otherParticipant = conv.participants.find((p) => p._id.toString() !== userId.toString());
+			return {
+				_id: conv._id,
+				participant: otherParticipant,
+				lastMessage: conv.messages[0] || null,
+			};
+		});
+
+		res.status(200).json(formattedConversations);
+	} catch (error) {
+		console.log("Ошибка в получении разговоров: ", error.message);
+		res.status(500).json({ error: "Ошибка на сервере 500" });
+	}
+};
