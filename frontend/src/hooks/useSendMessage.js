@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useConversation from "../zustand/useConversation";
 import toast from "react-hot-toast";
-import { encryptMessage, importPublicKey } from "../utils/crypto";
+import { encryptMessage, importPublicKey, generateAESKey, encryptAES, exportAESKey } from "../utils/crypto";
 
 const useSendMessage = () => {
 	const [loading, setLoading] = useState(false);
