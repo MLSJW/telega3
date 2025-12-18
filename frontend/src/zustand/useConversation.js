@@ -4,7 +4,11 @@ const useConversation = create((set) => ({
 	selectedConversation: null,
 	setSelectedConversation: (selectedConversation) => set({ selectedConversation }),
 	messages: [],
-	setMessages: (messages) => set({ messages }),
+	// Supports both direct array assignment and functional updates (like React setState)
+	setMessages: (updater) =>
+		set((state) => ({
+			messages: typeof updater === "function" ? updater(state.messages) : updater,
+		})),
 }));
 
 export default useConversation;
