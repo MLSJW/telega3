@@ -18,9 +18,9 @@ const useGetMessages = () => {
 				});
 				const data = await res.json();
 				if (data.error) throw new Error(data.error);
-				if (!Array.isArray(data)) throw new Error("Invalid messages payload (expected array)");
+				if (!Array.isArray(data.messages)) throw new Error("Invalid messages payload (expected array)");
 
-				const decryptedMessages = await Promise.all(data.map(async (msg) => {
+				const decryptedMessages = await Promise.all(data.messages.map(async (msg) => {
 					// Определяем тип сообщения (по умолчанию "text")
 					const msgType = msg.type || "text";
 					
@@ -59,13 +59,15 @@ const useGetMessages = () => {
 				setMessages(decryptedMessages);
 
 				// mark messages as read on server for this conversation
-				try {
-					await fetch(`/api/messages/conversations/${selectedConversation._id}/read`, {
-						method: "POST",
-						credentials: "include",
-					});
-				} catch (err) {
-					console.error("Error marking conversation read:", err);
+				if (data.conversationId) {
+					try {
+						await fetch(`/api/messages/conversations/${data.conversationId}/read`, {
+							method: "POST",
+							credentials: "include",
+						});
+					} catch (err) {
+						console.error("Error marking conversation read:", err);
+					}
 				}
 			} catch (error) {
 				toast.error(error.message);

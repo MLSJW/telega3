@@ -111,11 +111,11 @@ export const getMessages = async (req, res) => {
 			participants: { $all: [senderId, userToChatId] },
 		}).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
 
-		if (!conversation) return res.status(200).json([]);
+		if (!conversation) return res.status(200).json({ messages: [], conversationId: null });
 
 		const messages = conversation.messages;
 
-		res.status(200).json(messages);
+		res.status(200).json({ messages, conversationId: conversation._id });
 	} catch (error) {
 		console.log("Ошибка в получении смс: ", error.message);
 		res.status(500).json({ error: "Ошибка на сервере 500" });

@@ -132,13 +132,13 @@ const MessageInput = () => {
 			
 			{showEmoji && (
 				<div className='absolute bottom-full mb-2 bg-gray-700 p-2 rounded flex flex-wrap gap-1 max-w-xs'>
-					{['😀', '😂', '😍', '👍', '❤️', '😢', '😡', '🎉', '🔥', '💯'].map(emoji => (
+					{['😀', '😂', '😍', '👍', '❤️', '😢', '😡', '🎉', '🔥', '💯'].map(emj => (
 						<button 
-							key={emoji} 
-							onClick={() => { setMessage(prev => prev + emoji); setShowEmoji(false); }} 
+							key={emj} 
+							onClick={() => { setMessage(prev => prev + emj); setShowEmoji(false); }} 
 							className='text-2xl p-1 hover:bg-gray-600 rounded'
 						>
-							{emoji}
+							{emj}
 						</button>
 					))}
 				</div>
