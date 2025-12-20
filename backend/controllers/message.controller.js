@@ -32,14 +32,6 @@ export const sendMessage = async (req, res) => {
 		const messageType = type || (req.file ? (req.file.mimetype.startsWith("image/") ? "image" : "audio") : "text");
 		if (req.file) {
 			fileUrl = `/uploads/${messageType === "image" ? "images" : "audio"}/${req.file.filename}`;
-			console.log("File uploaded:", {
-				originalname: req.file.originalname,
-				filename: req.file.filename,
-				path: req.file.path,
-				mimetype: req.file.mimetype,
-				fileUrl: fileUrl,
-				type: messageType
-			});
 		}
 
 		let conversation = await Conversation.findOne({
@@ -71,7 +63,6 @@ export const sendMessage = async (req, res) => {
 
 		// Конвертируем mongoose объект в plain object для socket.io
 		const messageToEmit = newMessage.toObject ? newMessage.toObject() : JSON.parse(JSON.stringify(newMessage));
-		console.log("Message to emit:", { type: messageToEmit.type, fileUrl: messageToEmit.fileUrl, _id: messageToEmit._id });
 		
 		// SOCKET IO FUNCTIONALITY WILL GO HERE
 		const receiverSocketId = getReceiverSocketId(receiverId.toString());

@@ -71,7 +71,7 @@ const useSendMessage = () => {
 			const data = await res.json();
 			if (data.error) throw new Error(data.error);
 
-			setMessages((prev) => [...prev, data]);
+			// Не добавляем в стейт вручную - сообщение придет через socket
 			toast.success("Голосовое сообщение отправлено");
 		} catch (error) {
 			toast.error(error.message);
@@ -97,7 +97,7 @@ const useSendMessage = () => {
 			const data = await res.json();
 			if (data.error) throw new Error(data.error);
 
-			setMessages((prev) => [...prev, data]);
+			// Не добавляем в стейт вручную - сообщение придет через socket
 			toast.success("Изображение отправлено");
 		} catch (error) {
 			toast.error(error.message);
