@@ -48,7 +48,6 @@ const Conversation = ({ conversation, lastIdx, onDelete }) => {
 							{conversation.unreadCount > 0 && (
 								<span className='badge badge-error'>{conversation.unreadCount}</span>
 							)}
-							<span className='text-xl'>{emoji}</span>
 						</div>
 					</div>
 					{lastMsg && (
