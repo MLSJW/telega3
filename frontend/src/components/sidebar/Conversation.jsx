@@ -46,7 +46,7 @@ const Conversation = ({ conversation, lastIdx, emoji, onDelete }) => {
 					</div>
 					{lastMsg && (
 						<p className='text-sm text-gray-400 truncate'>
-							{lastMsg.type === 'text' ? (lastMsg.message || 'Message') : (lastMsg.type === 'audio' ? 'Voice message' : 'Image')}
+							{lastMsg.type === 'text' ? 'Текст' : (lastMsg.type === 'audio' ? 'Голосовое' : 'Изображение')}
 						</p>
 					)}
 					{isLastMsgSentByMe && (
