@@ -74,7 +74,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-xl shadow-xl text-white relative">
+    <div className="max-w-xl mx-auto bg-gray-800 p-9 rounded-xl shadow-xl text-white relative">
       <button 
         onClick={() => navigate("/")} 
         className="absolute top-3 right-3 text-white hover:text-gray-400 text-3xl font-bold"
@@ -102,7 +102,7 @@ const Settings = () => {
       <form onSubmit={handleSave}>
         {/* Имя и фамилия - только поле ввода без надписи */}
         <div className="mb-4 text-center">
-          <p className="w-full p-2 rounded bg-gray-700 border-0 text-xl text-white">{form.fullName || authUser?.fullName}</p>
+          <p className="text-xl text-white">{form.fullName || authUser?.fullName}</p>
           <p className="text-sm text-blue-400">В сети</p>
         </div>
         
