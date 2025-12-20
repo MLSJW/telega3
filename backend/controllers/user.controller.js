@@ -1,24 +1,52 @@
 import User from "../models/user.model.js";
 
-export const getUsersForSidebar = async (req, res) => {
+export async function getUsersForSidebar(req, res) {
 	try {
 		const loggedInUserId = req.user._id;
 		const { search } = req.query;
-
 		let query = { _id: { $ne: loggedInUserId } };
-
 		if (search) {
 			query.$or = [
 				{ username: { $regex: search, $options: 'i' } },
 				{ fullName: { $regex: search, $options: 'i' } }
 			];
 		}
-
 		const filteredUsers = await User.find(query).select("-password");
-
 		res.status(200).json(filteredUsers);
 	} catch (error) {
 		console.error("Ошибка в получении слайдбара юзеров: ", error.message);
 		res.status(500).json({ error: "Ошибка на сервере 500" });
+	}
+}
+
+// Удаление аккаунта
+export async function deleteMyAccount(req, res) {
+	try {
+		const userId = req.user._id;
+		await User.findByIdAndDelete(userId);
+		res.clearCookie("jwt");
+		res.json({ success: true });
+	} catch (error) {
+		console.error("Ошибка при удалении аккаунта:", error.message);
+		res.status(500).json({ error: "Ошибка на сервере" });
+	}
+};
+
+// Обновление профиля (имя, username, пароль, аватар)
+export async function updateMyProfile(req, res) {
+	try {
+		const userId = req.user._id;
+		const { fullName, username, password } = req.body;
+		const profilePic = req.file ? `/uploads/images/${req.file.filename}` : undefined;
+		const update = {};
+		if (fullName) update.fullName = fullName;
+		if (username) update.username = username;
+		if (password) update.password = password; // хеширование обязано быть в pre-save hook
+		if (profilePic) update.profilePic = profilePic;
+		const updated = await User.findByIdAndUpdate(userId, update, { new: true });
+		res.json(updated);
+	} catch (error) {
+		console.error("Ошибка при обновлении профиля:", error.message);
+		res.status(500).json({ error: "Ошибка на сервере" });
 	}
 };
