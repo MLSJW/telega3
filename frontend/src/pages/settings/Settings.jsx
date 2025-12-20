@@ -74,7 +74,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-gray-800 p-6 rounded-xl shadow-xl text-white relative"> {/* Added relative for positioning */}
+    <div className="max-w-lg mx-auto bg-gray-800 py-12 px-6 rounded-xl shadow-xl text-white relative min-h-[700px]"> {/* Added relative for positioning */}
       <button 
         onClick={() => navigate("/")} 
         className="absolute top-3 right-3 text-white hover:text-gray-400 text-3xl font-bold"
@@ -102,13 +102,13 @@ const Settings = () => {
       <form onSubmit={handleSave}>
         {/* Имя и фамилия - только поле ввода без надписи */}
         <div className="mb-4 text-center">
-          <p className="w-full p-2 rounded bg-gray-700 border-0 text-white">{form.fullName || authUser?.fullName}</p>
+          <p className="w-full p-2 rounded bg-gray-700 border-0 text-lg font-semibold text-white">{form.fullName || authUser?.fullName}</p>
         </div>
         
         {/* Username - отображение */}
         <div className="mb-4 text-center">
-          <p className="text-sm text-gray-400">@{form.username || authUser?.username}</p>
-          <p className="text-lg font-semibold">Username</p>
+          <p className="text-lg font-semibold">@{form.username || authUser?.username}</p>
+          <p className="text-sm text-gray-400">Username</p>
         </div>
         
         {/* <div className="mb-4">
