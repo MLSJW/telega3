@@ -74,7 +74,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-gray-800 p-9 rounded-xl shadow-xl text-white relative">
+    <div className="max-w-xl mx-auto bg-gray-800 p-9 rounded-xl shadow-xl text-white relative min-h-[500px]">
       <button 
         onClick={() => navigate("/")} 
         className="absolute top-3 right-3 text-white hover:text-gray-400 text-3xl font-bold"
