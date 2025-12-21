@@ -12,6 +12,7 @@ const ProfileSettings = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,13 +27,13 @@ const ProfileSettings = () => {
     setError("");
     setLoading(true);
     try {
-      if (form.password && form.password !== form.confirmPassword) {
+      if (showPasswordForm && form.password !== form.confirmPassword) {
         setError("Пароли не совпадают");
         setLoading(false);
         return;
       }
       const formData = new FormData();
-      if (form.password) formData.append("password", form.password);
+      if (showPasswordForm && form.password) formData.append("password", form.password);
       if (profilePic) formData.append("profilePic", profilePic);
 
       const res = await fetch("/api/users/me", {
@@ -62,15 +63,27 @@ const ProfileSettings = () => {
       <h2 className="text-2xl font-bold mb-6 text-center">Настройки профиля</h2>
       
       {error && <div className="bg-red-600 p-2 mb-2 rounded">{error}</div>}
+
+      <button 
+        onClick={() => setShowPasswordForm(!showPasswordForm)}
+        className="w-full p-2 bg-gray-700 rounded hover:bg-gray-600 transition-colors mb-4"
+      >
+        {showPasswordForm ? "Скрыть поля пароля" : "Сменить пароль"}
+      </button>
+
       <form onSubmit={handleSave}>
-        <div className="mb-4">
-          <label className="block mb-2">Новый пароль:</label>
-          <input type="password" className="w-full p-2 rounded bg-gray-700" name="password" value={form.password} onChange={handleChange} />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2">Подтвердите новый пароль:</label>
-          <input type="password" className="w-full p-2 rounded bg-gray-700" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
-        </div>
+        {showPasswordForm && (
+          <div className="transition-all duration-300 overflow-hidden" style={{ maxHeight: showPasswordForm ? "200px" : "0" }}>
+            <div className="mb-4">
+              <label className="block mb-2">Новый пароль:</label>
+              <input type="password" className="w-full p-2 rounded bg-gray-700" name="password" value={form.password} onChange={handleChange} />
+            </div>
+            <div className="mb-4">
+              <label className="block mb-2">Подтвердите новый пароль:</label>
+              <input type="password" className="w-full p-2 rounded bg-gray-700" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} />
+            </div>
+          </div>
+        )}
         <div className="mb-4">
           <label className="block mb-2">Изменить аватар:</label>
           <input type="file" accept="image/*" onChange={handleFileChange} className="w-full p-2 bg-gray-700 rounded" />
