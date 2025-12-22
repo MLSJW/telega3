@@ -22,7 +22,7 @@ const useGetConversations = () => {
 					throw new Error(data.error);
 				}
 				if (!Array.isArray(data)) throw new Error("Invalid conversations payload (expected array)");
-				setConversations(data);
+				setConversations(data.filter(c => c && c._id));
 			} catch (error) {
 				toast.error(error.message);
 			} finally {
@@ -37,6 +37,7 @@ const useGetConversations = () => {
 		if (!socket || !authUser) return;
 
 		const onNewConversation = (conversation) => {
+			if (!conversation || !conversation._id) return;
 			setConversations((prev) => {
 				if (prev.some((c) => c._id === conversation._id)) return prev;
 				const participant = conversation.participants.find(p => p._id !== authUser._id);

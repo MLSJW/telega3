@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,11 +11,15 @@ const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		let uploadPath = "";
 		if (file.mimetype.startsWith("image/")) {
-			uploadPath = path.join(__dirname, "../uploads/images");
+			uploadPath = "/data/uploads/images";
 		} else if (file.mimetype.startsWith("audio/")) {
-			uploadPath = path.join(__dirname, "../uploads/audio");
+			uploadPath = "/data/uploads/audio";
 		} else {
 			return cb(new Error("Неподдерживаемый тип файла"));
+		}
+		// Ensure directory exists
+		if (!fs.existsSync(uploadPath)) {
+			fs.mkdirSync(uploadPath, { recursive: true });
 		}
 		cb(null, uploadPath);
 	},

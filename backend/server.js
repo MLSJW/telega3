@@ -31,7 +31,7 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
 
-app.use("/uploads", express.static(path.join(__dirname, "../backend/uploads/images"), {
+app.use("/uploads", express.static("/data/uploads", {
 	setHeaders: (res, filePath) => {
 		if (filePath.endsWith('.webm')) {
 			res.setHeader('Content-Type', 'audio/webm');

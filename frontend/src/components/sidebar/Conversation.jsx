@@ -9,7 +9,9 @@ const Conversation = ({ conversation, lastIdx, onDelete }) => {
 	const [preview, setPreview] = useState('');
 
 	const participant = conversation.participant;
-	const isSelected = selectedConversation?.participant?._id === conversation.participant._id;
+	if (!participant) return null; // Prevent errors if participant is undefined
+
+	const isSelected = selectedConversation?.participant?._id === participant._id;
 	const { onlineUsers } = useSocketContext();
 	const isOnline = onlineUsers.includes(participant._id);
 
@@ -37,7 +39,7 @@ const Conversation = ({ conversation, lastIdx, onDelete }) => {
 			>
 				<div className={`avatar ${isOnline ? "online" : ""}`}>
 					<div className='w-12 rounded-full'>
-						<img src={participant.profilePic} alt='user avatar' />
+						<img src={participant.profilePic} alt='user avatar' onError={(e) => { e.target.src = '/logo.png'; }} />
 					</div>
 				</div>
 

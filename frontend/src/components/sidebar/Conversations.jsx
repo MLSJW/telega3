@@ -38,7 +38,7 @@ const Conversations = () => {
 				/>
 			</div>
 
-			{filtered.map((conversation, idx) => (
+			{filtered.filter(conversation => conversation && conversation._id).map((conversation, idx) => (
 				<Conversation
 					key={conversation._id}
 					conversation={conversation}

@@ -20,7 +20,7 @@ const Messages = () => {
 			{!loading &&
 				Array.isArray(messages) &&
 				messages.length > 0 &&
-				messages.map((message) => (
+				messages.filter(message => message && message._id).map((message) => (
 					<div key={message._id} ref={lastMessageRef}>
 						<Message message={message} />
 					</div>
