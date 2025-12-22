@@ -76,11 +76,15 @@ const ProfileSettings = () => {
       formData.append("fullName", form.fullName);
       formData.append("username", form.username);
       if (showPasswordForm && form.password) formData.append("password", form.password);
-      if (profilePic && completedCrop) {
+  
+      // Обязательно добавляй файл profilePic, если он есть (даже если нет crop)
+      if (showCrop && profilePic && completedCrop) {
         const croppedImg = await getCroppedImg(imageRef, completedCrop);
         formData.append("profilePic", croppedImg, "profile.jpg");
+      } else if (profilePic) {
+        formData.append("profilePic", profilePic);
       }
-
+  
       const res = await apiFetch("/api/users/me", {
         method: "PATCH",
         body: formData
