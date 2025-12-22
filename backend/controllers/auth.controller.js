@@ -24,8 +24,8 @@ export const signup = async (req, res) => {
 
 		const emailVerificationToken = crypto.randomBytes(32).toString('hex');
 
-		const boyProfilePic = `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7Bii1KzhQKysxW4Rli2tw3vsoZ_d9mEO7ew&s`;
-		const girlProfilePic = `https://avatars.mds.yandex.net/i?id=7c385f5ec8c62930220726878781cb7fe23b5db9-5487972-images-thumbs&n=13`;
+		const boyProfilePic = `/boyPicrute.jpg`;
+		const girlProfilePic = `/girlPicture.webp`;
 
 		const newUser = new User({
 			fullName,

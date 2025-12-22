@@ -10,7 +10,7 @@ const ProfileDrawer = ({ open, onClose }) => {
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl">×</button>
         <div className="flex flex-col items-center mt-8 mb-6">
           <img
-                  src={authUser?.profilePic ? authUser.profilePic + "?t=" + Date.now() : "/default-avatar.png"}
+                  src={authUser?.profilePic ? authUser.profilePic + "?t=" + Date.now() : "/uploads/images/default-avatar.png"}
             alt="Аватар"
             className="w-20 h-20 rounded-full border-4 border-slate-600 object-cover mb-4"
           />
