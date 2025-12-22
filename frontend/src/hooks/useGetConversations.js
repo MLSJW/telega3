@@ -38,7 +38,6 @@ const useGetConversations = () => {
 
 		const onNewConversation = (conversation) => {
 			setConversations((prev) => {
-				// avoid duplicates
 				if (prev.some((c) => c._id === conversation._id)) return prev;
 				const participant = conversation.participants.find(p => p._id !== authUser._id);
 				return [{ ...conversation, participant }, ...prev];
@@ -50,7 +49,6 @@ const useGetConversations = () => {
 		};
 
 		const onMessagesRead = ({ conversationId, userId }) => {
-			// If the current user read messages in a conversation, set unreadCount to 0 for that conversation
 			if (userId === authUser._id) {
 				setConversations((prev) => prev.map((c) => (c._id === conversationId ? { ...c, unreadCount: 0 } : c)));
 			}
@@ -66,7 +64,6 @@ const useGetConversations = () => {
 					}
 					return c;
 				});
-				// re-sort by lastMessage
 				updated.sort((a, b) => {
 					const ta = a.lastMessage ? new Date(a.lastMessage.createdAt).getTime() : 0;
 					const tb = b.lastMessage ? new Date(b.lastMessage.createdAt).getTime() : 0;

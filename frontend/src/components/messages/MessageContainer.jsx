@@ -12,7 +12,6 @@ const MessageContainer = () => {
 	const { onlineUsers } = useSocketContext();
 
 	useEffect(() => {
-		// cleanup function (unmounts)
 		return () => setSelectedConversation(null);
 	}, [setSelectedConversation]);
 

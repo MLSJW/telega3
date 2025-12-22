@@ -41,7 +41,7 @@ export const signup = async (req, res) => {
 		if (newUser) {
 			await newUser.save();
 
-			// Send verification email
+		
 			await sendVerificationEmail(email, emailVerificationToken);
 
 			res.status(201).json({
@@ -122,7 +122,7 @@ export const forgotPassword = async (req, res) => {
 		console.log("User found:", user.email);
 		const resetToken = crypto.randomBytes(32).toString('hex');
 		user.resetPasswordToken = resetToken;
-		user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+		user.resetPasswordExpires = Date.now() + 3600000;
 		await user.save();
 		console.log("Token saved, sending email...");
 		await sendResetPasswordEmail(email, resetToken);

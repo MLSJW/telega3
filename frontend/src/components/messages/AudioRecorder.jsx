@@ -41,8 +41,6 @@ const AudioRecorder = ({ onRecordingComplete, onCancel }) => {
 			mediaRecorder.start();
 			setIsRecording(true);
 			setRecordingTime(0);
-
-			// Таймер для отображения времени записи
 			timerRef.current = setInterval(() => {
 				setRecordingTime((prev) => prev + 1);
 			}, 1000);

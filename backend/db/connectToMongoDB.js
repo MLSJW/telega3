@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const connectToMongoDB = async () => {
 	try {
 		await mongoose.connect(process.env.MONGO_DB_URI);
-		console.log("Подкючился к манго ДБ");
+		console.log("Подкючился к бд");
 	} catch (error) {
-		console.log("Ошибка подключения к манго дб", error.message);
+		console.log("Ошибка подключения к бд", error.message);
 	}
 };
 

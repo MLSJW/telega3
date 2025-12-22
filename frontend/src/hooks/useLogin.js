@@ -27,14 +27,12 @@ const useLogin = () => {
 			localStorage.setItem("chat-user", JSON.stringify(data));
 			setAuthUser(data);
 
-			// Если нет privateKey, генерировать новые (для нового устройства)
 			let privateKeyBase64 = localStorage.getItem("private-key");
 			if (!privateKeyBase64) {
 				const keyPair = await generateKeyPair();
 				privateKeyBase64 = await exportPrivateKey(keyPair.privateKey);
 				localStorage.setItem("private-key", privateKeyBase64);
 				setPrivateKey(privateKeyBase64);
-				// TODO: обновить publicKey на сервере
 			} else {
 				setPrivateKey(privateKeyBase64);
 			}

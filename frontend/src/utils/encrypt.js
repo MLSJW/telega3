@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const SECRET_KEY = 'my-secret-key-123'; // В продакшене использовать безопасный ключ из .env
+const SECRET_KEY = 'my-secret-key-123'; 
 
 export const encryptMessage = (message) => {
     return CryptoJS.AES.encrypt(message, SECRET_KEY).toString();

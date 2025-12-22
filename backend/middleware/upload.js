@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Настройка хранилища
+
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		let uploadPath = "";
@@ -19,14 +19,14 @@ const storage = multer.diskStorage({
 		cb(null, uploadPath);
 	},
 	filename: function (req, file, cb) {
-		// Генерируем уникальное имя файла: timestamp-random-originalname
+	
 		const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
 		const ext = path.extname(file.originalname);
 		cb(null, file.fieldname + "-" + uniqueSuffix + ext);
 	},
 });
 
-// Фильтр файлов
+
 const fileFilter = (req, file, cb) => {
 	if (file.mimetype.startsWith("image/")) {
 		cb(null, true);
@@ -40,7 +40,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
 	storage: storage,
 	limits: {
-		fileSize: 50 * 1024 * 1024, // 50MB максимум
+		fileSize: 50 * 1024 * 1024, 
 	},
 	fileFilter: fileFilter,
 });

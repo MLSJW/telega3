@@ -20,15 +20,12 @@ const useGetMessages = () => {
 				if (!Array.isArray(data.messages)) throw new Error("Invalid messages payload (expected array)");
 
 				const decryptedMessages = await Promise.all(data.messages.map(async (msg) => {
-					// Определяем тип сообщения (по умолчанию "text")
 					const msgType = msg.type || "text";
 					
-					// Аудио и изображения не шифруются, просто возвращаем как есть
 					if (msgType === "audio" || msgType === "image") {
 						return { ...msg, type: msgType };
 					}
 
-					// Текстовые сообщения требуют расшифровки
 					if (!privateKey) {
 						return { ...msg, type: msgType, message: "Missing private key" };
 					}
@@ -36,7 +33,6 @@ const useGetMessages = () => {
 					const privateKeyObj = await importPrivateKey(privateKey);
 					let message;
 					try {
-						// if I am sender -> use encryptedKeySender; else use encryptedKey
 						const isSender = msg.senderId === authUser._id;
 						const keyToUse = isSender ? msg.encryptedKeySender : msg.encryptedKey;
 						if (!keyToUse) {
@@ -57,7 +53,6 @@ const useGetMessages = () => {
 				}));
 				setMessages(decryptedMessages);
 
-				// mark messages as read on server for this conversation
 				if (data.conversationId) {
 					try {
 						await apiFetch(`/api/messages/conversations/${data.conversationId}/read`, {

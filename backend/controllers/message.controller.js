@@ -7,7 +7,7 @@ import User from "../models/user.model.js";
 const ALGORITHM = "rsa";
 const KEY_FORMAT = "pem";
 
-// Функция для шифрования
+
 const encryptMessage = (message, publicKeyPem) => {
 	const buffer = Buffer.from(message, "utf8");
 	const encrypted = crypto.publicEncrypt(
@@ -27,7 +27,6 @@ export const sendMessage = async (req, res) => {
 		const { id: receiverId } = req.params;
 		const senderId = req.user._id;
 
-		// Получаем URL загруженного файла, если есть
 		let fileUrl = null;
 		const messageType = type || (req.file ? (req.file.mimetype.startsWith("image/") ? "image" : "audio") : "text");
 		if (req.file) {
@@ -60,26 +59,26 @@ export const sendMessage = async (req, res) => {
 			conversation.messages.push(newMessage._id);
 		}
 
-		// this will run in parallel
+	
 		await Promise.all([conversation.save(), newMessage.save()]);
 
-		// Конвертируем mongoose объект в plain object для socket.io
+
 		const messageToEmit = newMessage.toObject ? newMessage.toObject() : JSON.parse(JSON.stringify(newMessage));
 		
-		// SOCKET IO FUNCTIONALITY WILL GO HERE
+	
 		const receiverSocketId = getReceiverSocketId(receiverId.toString());
 		if (receiverSocketId) {
-			// io.to(<socket_id>).emit() used to send events to specific client
+		
 			io.to(receiverSocketId).emit("newMessage", messageToEmit);
 		}
 
-		// Также отправляем отправителю через socket, если он онлайн
+	
 		const senderSocketId = getReceiverSocketId(senderId.toString());
 		if (senderSocketId) {
 			io.to(senderSocketId).emit("newMessage", messageToEmit);
 		}
 
-		// If a new conversation was created, notify both participants so UI can update conversations list
+		
 		if (isNewConversation) {
 			try {
 				const otherParticipant = await User.findById(receiverId).select("fullName username profilePic publicKey");
@@ -109,7 +108,7 @@ export const getMessages = async (req, res) => {
 
 		const conversation = await Conversation.findOne({
 			participants: { $all: [senderId, userToChatId] },
-		}).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
+		}).populate("messages"); 
 
 		if (!conversation) return res.status(200).json({ messages: [], conversationId: null });
 
@@ -138,7 +137,7 @@ export const markConversationRead = async (req, res) => {
 			{ $push: { readBy: userId } }
 		);
 
-		// emit read receipt to both participants so both clients update unread counts
+		
 		const participantIds = conversation.participants.map(p => p.toString());
 		participantIds.forEach(pid => {
 			const sockId = getReceiverSocketId(pid);
@@ -163,11 +162,11 @@ export const deleteConversation = async (req, res) => {
 			return res.status(403).json({ error: 'Not a participant' });
 		}
 
-		// delete messages
+		
 		await Message.deleteMany({ _id: { $in: conversation.messages } });
 		await conversation.remove();
 
-		// notify other participant
+		
 		const otherParticipantId = conversation.participants.find(p => p.toString() !== userId.toString());
 		const otherSocketId = getReceiverSocketId(otherParticipantId.toString());
 		if (otherSocketId) {
@@ -189,13 +188,13 @@ export const getConversations = async (req, res) => {
 			select: "fullName username profilePic publicKey",
 		}).populate({
 			path: "messages",
-			options: { sort: { createdAt: -1 }, limit: 1 }, // Последнее сообщение
+			options: { sort: { createdAt: -1 }, limit: 1 }, 
 		});
 
-		// Форматируем для frontend: для каждого conversation вернуть другого участника + unread count
+		
 		const formattedConversations = await Promise.all(conversations.map(async (conv) => {
 			const otherParticipant = conv.participants.find((p) => p._id.toString() !== userId.toString());
-			// count unread messages for current user
+			
 			const unreadCount = await Message.countDocuments({ _id: { $in: conv.messages }, receiverId: userId, readBy: { $nin: [userId] } });
 			return {
 				_id: conv._id,
@@ -205,7 +204,7 @@ export const getConversations = async (req, res) => {
 			};
 		}));
 
-		// sort by lastMessage createdAt desc (put most recent on top)
+		
 		formattedConversations.sort((a, b) => {
 			const ta = a.lastMessage ? new Date(a.lastMessage.createdAt).getTime() : 0;
 			const tb = b.lastMessage ? new Date(b.lastMessage.createdAt).getTime() : 0;

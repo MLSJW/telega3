@@ -24,7 +24,7 @@ const SearchInput = () => {
 			if (data.length === 0) {
 				return toast.error("No such user found!");
 			}
-			const user = data[0]; // Take the first match
+			const user = data[0]; 
 			setSelectedConversation({ participant: user });
 			setSearch("");
 		} catch (error) {

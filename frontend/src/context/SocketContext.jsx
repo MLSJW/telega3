@@ -15,7 +15,6 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			// Connect to same origin (works behind Vite proxy and in production)
 			const socket = io("/", {
 				query: {
 					userId: authUser._id,
@@ -25,7 +24,6 @@ export const SocketContextProvider = ({ children }) => {
 
 			setSocket(socket);
 
-			// socket.on() is used to listen to the events. can be used both on client and server side
 			socket.on("getOnlineUsers", (users) => {
 				setOnlineUsers(users);
 			});

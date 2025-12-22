@@ -50,7 +50,7 @@ const Message = ({ message }) => {
 			);
 		}
 
-		// Текстовое сообщение (default или type === "text")
+	
 		return <div className="break-words">{message.message || ""}</div>;
 	};
 

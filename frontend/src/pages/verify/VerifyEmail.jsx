@@ -25,7 +25,6 @@ const VerifyEmail = () => {
 				}
 				setMessage(data.message + ". Redirecting to login...");
 				toast.success(data.message);
-				// Redirect to login after 2 seconds
 				setTimeout(() => navigate("/login"), 2000);
 			} catch (error) {
 				setMessage(error.message);

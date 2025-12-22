@@ -14,7 +14,6 @@ const useSignup = () => {
 
 		setLoading(true);
 		try {
-			// Генерация ключей
 			const keyPair = await generateKeyPair();
 			const publicKeyBase64 = await exportPublicKey(keyPair.publicKey);
 			const privateKeyBase64 = await exportPrivateKey(keyPair.privateKey);
@@ -29,7 +28,6 @@ const useSignup = () => {
 			if (data.error) {
 				throw new Error(data.error);
 			}
-			// Don't set authUser since email not verified
 			toast.success(data.message || "Signup successful! Please check your email to verify your account.");
 		} catch (error) {
 			toast.error(error.message);

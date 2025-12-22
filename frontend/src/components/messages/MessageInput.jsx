@@ -11,7 +11,7 @@ const MessageInput = () => {
 	const fileInputRef = useRef(null);
 	const { loading, sendMessage, sendAudioMessage, sendImageMessage } = useSendMessage();
 
-	const emojis = ['😀', '😂', '😍', '👍', '❤️', '😢', '😡', '🎉', '🔥', '💯'];
+	const emojis = [];
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -36,13 +36,13 @@ const MessageInput = () => {
 		const file = e.target.files[0];
 		if (file && file.type.startsWith("image/")) {
 			setSelectedImage(file);
-			setAudioBlob(null); // Сбросить аудио если выбрано изображение
+			setAudioBlob(null); 
 		}
 	};
 
 	const handleRecordingComplete = (blob) => {
 		setAudioBlob(blob);
-		setSelectedImage(null); // Сбросить изображение если записано аудио
+		setSelectedImage(null); 
 	};
 
 	const handleCancelRecording = () => {

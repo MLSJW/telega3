@@ -17,17 +17,11 @@ const useSendMessage = () => {
 			if (!selectedConversation?.participant?.publicKey) throw new Error("У собеседника нет publicKey (нужна повторная регистрация/обновление ключей)");
 			if (!authUser?.publicKey) throw new Error("У вас нет publicKey (перелогиньтесь/перерегистрируйтесь)");
 
-			// Генерация AES ключа
 			const aesKey = await generateAESKey();
-			// Шифрование сообщения AES
 			const encryptedData = await encryptAES(message, aesKey);
-			// Экспорт AES ключа
 			const aesKeyBase64 = await exportAESKey(aesKey);
-			// Импорт публичного ключа получателя
 			const publicKey = await importPublicKey(selectedConversation.participant.publicKey);
-			// Шифрование AES ключа RSA
 			const encryptedKey = await encryptMessage(aesKeyBase64, publicKey);
-			// Шифрование AES ключа RSA для отправителя (чтобы можно было расшифровать после reload)
 			const senderPublicKey = await importPublicKey(authUser.publicKey);
 			const encryptedKeySender = await encryptMessage(aesKeyBase64, senderPublicKey);
 
@@ -71,7 +65,6 @@ const useSendMessage = () => {
 			const data = await res.json();
 			if (data.error) throw new Error(data.error);
 
-			// Не добавляем в стейт вручную - сообщение придет через socket
 			toast.success("Голосовое сообщение отправлено");
 		} catch (error) {
 			toast.error(error.message);
@@ -97,7 +90,6 @@ const useSendMessage = () => {
 			const data = await res.json();
 			if (data.error) throw new Error(data.error);
 
-			// Не добавляем в стейт вручную - сообщение придет через socket
 			toast.success("Изображение отправлено");
 		} catch (error) {
 			toast.error(error.message);

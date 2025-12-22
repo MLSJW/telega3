@@ -31,21 +31,21 @@ const messageSchema = new mongoose.Schema(
 		},
 		encryptedKey: {
 			type: String,
-			required: false, // Not required for audio/image (can be unencrypted or use different encryption)
+			required: false, 
 		},
-		// AES key encrypted with sender's public key (so sender can decrypt their own messages after reload)
+
 		encryptedKeySender: {
 			type: String,
 			required: false,
 		},
-		// Users who read this message
+
 		readBy: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
 				ref: "User",
 			},
 		],
-		// createdAt, updatedAt
+
 	},
 	{ timestamps: true }
 );

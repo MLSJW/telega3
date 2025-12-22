@@ -14,10 +14,8 @@ const useListenMessages = () => {
 
 	useEffect(() => {
 		socket?.on("newMessage", async (newMessage) => {
-			// Determine message type (default "text")
 			const msgType = newMessage.type || "text";
 			
-			// Audio and images are not encrypted, add as is
 			if (msgType === "audio" || msgType === "image") {
 				newMessage.type = msgType;
 				newMessage.shouldShake = true;
@@ -25,7 +23,6 @@ const useListenMessages = () => {
 				try {
 					await sound.play();
 				} catch {
-					// ignore autoplay policy errors
 				}
 				setMessages((prev) => {
 					if (prev.some((m) => m._id === newMessage._id)) return prev;
@@ -34,12 +31,10 @@ const useListenMessages = () => {
 				return;
 			}
 
-			// Text messages require decryption
 			let message;
 			if (privateKey) {
 				try {
 					const privateKeyObj = await importPrivateKey(privateKey);
-					// if I am sender -> use encryptedKeySender; else use encryptedKey
 					const isSender = newMessage.senderId === authUser._id;
 					const keyToUse = isSender ? newMessage.encryptedKeySender : newMessage.encryptedKey;
 					if (!keyToUse) {
@@ -72,7 +67,6 @@ const useListenMessages = () => {
 			try {
 				await sound.play();
 			} catch {
-				// ignore autoplay policy errors
 			}
 			setMessages((prev) => {
 				if (prev.some((m) => m._id === newMessage._id)) return prev;
