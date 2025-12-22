@@ -15,6 +15,7 @@ const Settings = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [imageError, setImageError] = useState(false);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -84,11 +85,12 @@ const Settings = () => {
       
       {/* Аватар */}
       <div className="flex justify-center mb-6">
-        {authUser?.profilePic || profilePic ? (
+        {(authUser?.profilePic && !imageError) || profilePic ? (
           <img 
             src={profilePic ? URL.createObjectURL(profilePic) : authUser?.profilePic} 
-            alt="Аватар" 
+            alt="Аватар"
             className="w-32 h-32 rounded-full object-cover border-4 border-blue-600"
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="w-32 h-32 rounded-full bg-gray-600 flex items-center justify-center border-4 border-blue-600">

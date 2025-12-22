@@ -39,7 +39,7 @@ const Conversation = ({ conversation, lastIdx, onDelete }) => {
 			>
 				<div className={`avatar ${isOnline ? "online" : ""}`}>
 					<div className='w-12 rounded-full'>
-						<img src={participant.profilePic} alt='user avatar' />
+						<img src={participant.profilePic} alt='user avatar' onError={(e) => { e.target.src = '/logo.png'; }} />
 					</div>
 				</div>
 
