@@ -14,6 +14,7 @@ const useListenMessages = () => {
 
 	useEffect(() => {
 		socket?.on("newMessage", async (newMessage) => {
+			if (!newMessage || !newMessage._id) return; // Skip invalid messages
 			const msgType = newMessage.type || "text";
 			
 			if (msgType === "audio" || msgType === "image") {

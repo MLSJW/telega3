@@ -20,6 +20,7 @@ const useGetMessages = () => {
 				if (!Array.isArray(data.messages)) throw new Error("Invalid messages payload (expected array)");
 
 				const decryptedMessages = await Promise.all(data.messages.map(async (msg) => {
+					if (!msg) return null; // Skip invalid messages
 					const msgType = msg.type || "text";
 					
 					if (msgType === "audio" || msgType === "image") {
@@ -51,7 +52,7 @@ const useGetMessages = () => {
 					}
 					return { ...msg, type: msgType, message };
 				}));
-				setMessages(decryptedMessages);
+				setMessages(decryptedMessages.filter(msg => msg));
 
 				if (data.conversationId) {
 					try {
