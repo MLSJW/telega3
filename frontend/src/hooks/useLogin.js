@@ -27,6 +27,16 @@ const useLogin = () => {
 			localStorage.setItem("chat-user", JSON.stringify(data));
 			setAuthUser(data);
 
+			let oldPrivateKey = localStorage.getItem("private-key");
+			if (oldPrivateKey) {
+				// Save old key to array
+				let oldKeys = JSON.parse(localStorage.getItem("old-private-keys") || "[]");
+				if (!oldKeys.includes(oldPrivateKey)) {
+					oldKeys.push(oldPrivateKey);
+					localStorage.setItem("old-private-keys", JSON.stringify(oldKeys));
+				}
+			}
+
 			// Always generate new key pair on login to ensure consistency
 			const keyPair = await generateKeyPair();
 			const privateKeyBase64 = await exportPrivateKey(keyPair.privateKey);
