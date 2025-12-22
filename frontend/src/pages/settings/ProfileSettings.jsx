@@ -78,7 +78,7 @@ const ProfileSettings = () => {
       if (showPasswordForm && form.password) formData.append("password", form.password);
   
       // Обязательно добавляй файл profilePic, если он есть (даже если нет crop)
-      if (showCrop && profilePic && completedCrop) {
+      if (showCrop && profilePic && completedCrop && imageRef) {
         const croppedImg = await getCroppedImg(imageRef, completedCrop);
         formData.append("profilePic", croppedImg, "profile.jpg");
       } else if (profilePic) {
