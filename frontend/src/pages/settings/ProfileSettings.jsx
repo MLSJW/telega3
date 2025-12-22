@@ -138,7 +138,7 @@ const ProfileSettings = () => {
                 crop={crop}
                 onChange={setCrop}
                 onComplete={setCompletedCrop}
-                onImageLoaded={setImageRef}
+                onImageLoaded={(img) => setImageRef(img)}
                 circularCrop
               />
             </div>
