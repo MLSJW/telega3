@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const SECRET_KEY = 'my-secret-key-123'; 
+const SECRET_KEY = import.meta.env.VITE_SECRET_KEY || 'fallback-key-change-in-env';
 
 export const encryptMessage = (message) => {
     return CryptoJS.AES.encrypt(message, SECRET_KEY).toString();
