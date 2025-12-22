@@ -14,10 +14,10 @@ const useListenMessages = () => {
 
 	useEffect(() => {
 		socket?.on("newMessage", async (newMessage) => {
-			// Определяем тип сообщения (по умолчанию "text")
+			// Determine message type (default "text")
 			const msgType = newMessage.type || "text";
 			
-			// Аудио и изображения не шифруются, просто добавляем как есть
+			// Audio and images are not encrypted, add as is
 			if (msgType === "audio" || msgType === "image") {
 				newMessage.type = msgType;
 				newMessage.shouldShake = true;
@@ -34,7 +34,7 @@ const useListenMessages = () => {
 				return;
 			}
 
-			// Текстовые сообщения требуют расшифровки
+			// Text messages require decryption
 			let message;
 			if (privateKey) {
 				try {
@@ -44,8 +44,8 @@ const useListenMessages = () => {
 					const keyToUse = isSender ? newMessage.encryptedKeySender : newMessage.encryptedKey;
 					if (!keyToUse) {
 						message = isSender
-							? "[Не удаётся расшифровать: сообщение отправлено до обновления]"
-							: "[Не удаётся расшифровать: отсутствует ключ]";
+							? "[Unable to decrypt: message sent before update]"
+							: "[Unable to decrypt: key missing]";
 						newMessage.message = message;
 						newMessage.shouldShake = true;
 						setMessages((prev) => {
@@ -92,5 +92,6 @@ const useListenMessages = () => {
 			socket?.off("newMessage");
 			socket?.off("messagesRead");
 		};
+	}, [socket, setMessages, privateKey, authUser]);
 };
 export default useListenMessages;
