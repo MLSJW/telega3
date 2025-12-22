@@ -31,8 +31,8 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
 // Статические файлы для загруженных изображений и аудио (ВАЖНО: до frontend static)
-// Путь: backend/uploads (от корня проекта)
-app.use("/uploads", express.static(path.join(__dirname, "backend", "uploads"), {
+// Путь: uploads (в dist на Amvera, backend/uploads локально)
+app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
 	setHeaders: (res, filePath) => {
 		// Устанавливаем правильные заголовки для аудио/видео файлов
 		if (filePath.endsWith('.webm')) {
@@ -40,7 +40,6 @@ app.use("/uploads", express.static(path.join(__dirname, "backend", "uploads"), {
 		} else if (filePath.endsWith('.ogg')) {
 			res.setHeader('Content-Type', 'audio/ogg');
 		} else if (filePath.endsWith('.mp3')) {
-			res.setHeader('Content-Type', 'audio/mpeg');
 		} else if (filePath.endsWith('.wav')) {
 			res.setHeader('Content-Type', 'audio/wav');
 		}
