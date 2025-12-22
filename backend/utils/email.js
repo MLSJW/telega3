@@ -14,10 +14,10 @@ export const sendVerificationEmail = async (email, token) => {
     const mailOptions = {
         from: 'evg2000p@gmail.com',
         to: email,
-        subject: 'Verify your email for Telega3',
+        subject: 'Verify your email for curs-msngr',
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <h2>Welcome to Telega3!</h2>
+                <h2>Welcome to curs-msngr!</h2>
                 <p>Thank you for signing up. Please verify your email address by clicking the link below:</p>
                 <a href="${verificationUrl}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0;">Verify Email</a>
                 <p>If the button doesn't work, copy and paste this link into your browser:</p>
@@ -44,7 +44,7 @@ export const sendResetPasswordEmail = async (email, token) => {
     const mailOptions = {
         from: 'evg2000p@gmail.com',
         to: email,
-        subject: 'Reset your password for Telega3',
+        subject: 'Reset your password for curs-msngr',
         html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h2>Password Reset Request</h2>

@@ -27,6 +27,14 @@ const ProfileSettings = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setProfilePic(file);
+    setShowCrop(true);
+    setCompletedCrop(null);
+  };
+
   const getCroppedImg = (image, crop) => {
     const canvas = document.createElement('canvas');
     const scaleX = image.naturalWidth / image.width;
