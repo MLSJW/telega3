@@ -80,7 +80,17 @@ const useListenMessages = () => {
 			});
 		});
 
-		return () => socket?.off("newMessage");
-	}, [socket, setMessages, privateKey, authUser]);
+		socket?.on("messagesRead", ({ conversationId, userId }) => {
+			setMessages((prev) =>
+				prev.map((msg) =>
+					msg.receiverId === userId ? { ...msg, readBy: [...(msg.readBy || []), userId] } : msg
+				)
+			);
+		});
+
+		return () => {
+			socket?.off("newMessage");
+			socket?.off("messagesRead");
+		};
 };
 export default useListenMessages;

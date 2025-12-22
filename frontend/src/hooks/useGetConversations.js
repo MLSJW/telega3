@@ -39,7 +39,8 @@ const useGetConversations = () => {
 			setConversations((prev) => {
 				// avoid duplicates
 				if (prev.some((c) => c._id === conversation._id)) return prev;
-				return [conversation, ...prev];
+				const participant = conversation.participants.find(p => p._id !== authUser._id);
+				return [{ ...conversation, participant }, ...prev];
 			});
 		};
 
