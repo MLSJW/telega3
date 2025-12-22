@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema(
 			required: true,
 			unique: true,
 		},
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
 		password: {
 			type: String,
 			required: true,
@@ -28,6 +33,13 @@ const userSchema = new mongoose.Schema(
 		publicKey: {
 			type: String,
 			required: true,
+		},
+		emailVerified: {
+			type: Boolean,
+			default: false,
+		},
+		emailVerificationToken: {
+			type: String,
 		},
 		// createdAt, updatedAt => Member since <createdAt>
 	},
