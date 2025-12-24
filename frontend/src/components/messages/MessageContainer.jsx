@@ -51,8 +51,8 @@ const NoChatSelected = () => {
 	return (
 		<div className='flex items-center justify-center w-full h-full'>
 			<div className='px-4 text-center sm:text-lg md:text-xl text-gray-200 font-semibold flex flex-col items-center gap-2'>
-				<p>Привет, {authUser?.fullName ?? "друг"} 👋</p>
-				<p>Выбери чат, чтоб начать общение</p>
+				<p>Привет, {authUser?.fullName ?? "друг"}!</p>
+				<p>Выберите, кому хотели бы написать</p>
 				<TiMessages className='text-3xl md:text-6xl text-center' />
 			</div>
 		</div>
