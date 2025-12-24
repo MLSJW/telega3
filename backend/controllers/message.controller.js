@@ -163,8 +163,8 @@ export const deleteConversation = async (req, res) => {
 		}
 
 		
-		await Message.deleteMany({ _id: { $in: conversation.messages } });
-		await conversation.remove();
+		await Message.deleteMany({ _id: { $in: conversation.messages || [] } });
+		await Conversation.findByIdAndDelete(conversationId);
 
 		
 		const otherParticipantId = conversation.participants.find(p => p.toString() !== userId.toString());

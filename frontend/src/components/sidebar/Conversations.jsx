@@ -8,8 +8,10 @@ const Conversations = () => {
 
 	const handleDelete = async (conversationId) => {
 		try {
+			console.log('Deleting conversation:', conversationId);
 			const res = await apiFetch(`/api/messages/conversations/${conversationId}`, { method: 'DELETE' });
 			const data = await res.json();
+			console.log('Delete response:', data);
 			if (data.error) throw new Error(data.error);
 			setConversations((prev) => prev.filter((c) => c._id !== conversationId));
 		} catch (err) {
