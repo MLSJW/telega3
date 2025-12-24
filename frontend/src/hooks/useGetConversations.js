@@ -40,7 +40,9 @@ const useGetConversations = () => {
 			if (!conversation || !conversation._id) return;
 			setConversations((prev) => {
 				if (prev.some((c) => c._id === conversation._id)) return prev;
+				if (!conversation.participants || !Array.isArray(conversation.participants)) return prev;
 				const participant = conversation.participants.find(p => p._id !== authUser._id);
+				if (!participant) return prev;
 				return [{ ...conversation, participant }, ...prev];
 			});
 		};
@@ -58,6 +60,7 @@ const useGetConversations = () => {
 		const onNewMessage = (newMessage) => {
 			setConversations((prev) => {
 				const updated = prev.map((c) => {
+					if (!c.participant) return c;
 					const isParticipant = c.participant._id === newMessage.senderId || c.participant._id === newMessage.receiverId;
 					if (isParticipant) {
 						const newUnreadCount = newMessage.senderId !== authUser._id ? c.unreadCount + 1 : c.unreadCount;
