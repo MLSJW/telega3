@@ -17,6 +17,9 @@ const useListenMessages = () => {
 			if (!newMessage || !newMessage._id) return; // Skip invalid messages
 			const msgType = newMessage.type || "text";
 			
+			// Skip own messages to prevent duplicates
+			if (newMessage.senderId === authUser._id) return;
+			
 			if (msgType === "audio" || msgType === "image") {
 				newMessage.type = msgType;
 				newMessage.shouldShake = true;
